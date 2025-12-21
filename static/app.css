@@ -1,0 +1,23 @@
+:root{
+  --ss-bg: #0b1220;
+  --ss-card: #111a2e;
+  --ss-border: rgba(255,255,255,.08);
+  --ss-accent: #4f8cff;
+}
+
+body { background: radial-gradient(1200px 600px at 10% 0%, #16264a 0%, #0b1220 60%); }
+
+.ss-nav { background: rgba(8,12,22,.9); border-bottom: 1px solid var(--ss-border); backdrop-filter: blur(10px); }
+.ss-badge { background: rgba(79,140,255,.18); color: #cfe0ff; border: 1px solid rgba(79,140,255,.35); }
+
+.ss-card{
+  background: rgba(17,26,46,.85);
+  border: 1px solid var(--ss-border);
+  border-radius: 16px;
+  color: #e9eefc;
+}
+
+.ss-btn{ border-radius: 12px; }
+.form-control{ border-radius: 12px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.03); color: #e9eefc; }
+.form-control::placeholder{ color: rgba(233,238,252,.45); }
+.text-muted{ color: rgba(233,238,252,.6) !important; }

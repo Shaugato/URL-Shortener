@@ -1,0 +1,5 @@
+﻿{
+  "code": { "S": "abc1234" },
+  "url": { "S": "https://example.com" },
+  "created_at": { "N": "1734680000" }
+}
