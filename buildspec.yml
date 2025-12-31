@@ -18,16 +18,19 @@ phases:
       - ls -la application.py
       - python -c "import importlib.util; print(importlib.util.find_spec('application'))"
 
-    build:
+  build:
     commands:
       - cd $CODEBUILD_SRC_DIR
       - export PYTHONPATH=$CODEBUILD_SRC_DIR
+      - echo "Running unit/integration tests (moto) ..."
       - python -m pytest -q -m "not aws"
       - |
           if [ "${RUN_AWS_INTEGRATION:-}" = "1" ]; then
+            echo "RUN_AWS_INTEGRATION=1 -> Running AWS integration tests ..."
             python -m pytest -q -m aws
+          else
+            echo "RUN_AWS_INTEGRATION not set -> Skipping AWS integration tests."
           fi
-
 
 artifacts:
   files:
