@@ -124,19 +124,21 @@ def clean_alias(alias: str) -> str:
 # DynamoDB client
 # ----------------------------
 def ddb():
-    # Supports DynamoDB Local via DDB_ENDPOINT_URL
-    endpoint_url = os.getenv("DDB_ENDPOINT_URL")  # e.g. http://localhost:8000
-    session = boto3.session.Session()
-    return session.resource(
-        "dynamodb",
-        region_name=AWS_REGION,
-        endpoint_url=endpoint_url,
-        config=Config(retries={"max_attempts": 3, "mode": "standard"}),
-    )
+    # - production: real DynamoDB (AWS endpoint) via IAM role
+    # - local dev: set DDB_ENDPOINT_URL=http://localhost:8000 for DynamoDB Local
+    # - tests (moto): keep DDB_ENDPOINT_URL unset
+    region = os.getenv("AWS_REGION", AWS_REGION)
+    endpoint_url = os.getenv("DDB_ENDPOINT_URL")  # read at call time
+    session = boto3.session.Session(region_name=region)
+
+    if endpoint_url:
+        return session.resource("dynamodb", endpoint_url=endpoint_url)
+    return session.resource("dynamodb")
 
 
 def table():
-    return ddb().Table(TABLE_NAME)
+    # read at call time so tests can safely override
+    return ddb().Table(os.getenv("DDB_TABLE", TABLE_NAME))
 
 
 def put_link(code: str, long_url: str, expires_at: int | None):

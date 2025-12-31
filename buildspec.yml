@@ -18,11 +18,16 @@ phases:
       - ls -la application.py
       - python -c "import importlib.util; print(importlib.util.find_spec('application'))"
 
-  build:
+    build:
     commands:
       - cd $CODEBUILD_SRC_DIR
       - export PYTHONPATH=$CODEBUILD_SRC_DIR
-      - python -m pytest -q
+      - python -m pytest -q -m "not aws"
+      - |
+          if [ "${RUN_AWS_INTEGRATION:-}" = "1" ]; then
+            python -m pytest -q -m aws
+          fi
+
 
 artifacts:
   files:

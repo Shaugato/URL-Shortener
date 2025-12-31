@@ -3,7 +3,6 @@ import boto3
 import time
 import pytest
 from moto import mock_aws
-import boto3
 
 @pytest.fixture()
 def env(monkeypatch):
@@ -13,6 +12,8 @@ def env(monkeypatch):
     monkeypatch.setenv("BLOCK_PRIVATE_HOSTS", "true")
     monkeypatch.setenv("APP_VERSION", "test")
     monkeypatch.setenv("CODE_LEN", "7")
+    monkeypatch.delenv("DDB_ENDPOINT_URL", raising=False)
+
 
 @mock_aws
 def test_shorten_and_redirect(env, monkeypatch):
