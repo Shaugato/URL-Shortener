@@ -1,4 +1,5 @@
 import os
+import boto3
 import time
 import pytest
 from moto import mock_aws
@@ -91,8 +92,6 @@ def test_expiry_enforced_immediately(env):
     assert r.status_code == 201
     code = r.get_json()["code"]
 
-    # Simulate expiry by manually updating item in table
-    import boto3, os
     tbl = boto3.resource("dynamodb", region_name=os.environ["AWS_REGION"]).Table(os.environ["DDB_TABLE"])
     tbl.update_item(
         Key={"code": code},

@@ -8,13 +8,21 @@ phases:
       - python -m pip install --upgrade pip
       - pip install -r requirements.txt
       - pip install pytest ruff
+
   pre_build:
     commands:
+      - cd $CODEBUILD_SRC_DIR
       - ruff --version
       - ruff check . || true
+      - ls -la
+      - ls -la application.py
+      - python -c "import importlib.util; print(importlib.util.find_spec('application'))"
+
   build:
     commands:
-      - pytest -q
+      - cd $CODEBUILD_SRC_DIR
+      - export PYTHONPATH=$CODEBUILD_SRC_DIR
+      - python -m pytest -q
 
 artifacts:
   files:
