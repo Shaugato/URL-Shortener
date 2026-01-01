@@ -77,6 +77,10 @@ Resources:
       Source:
         Type: CODEPIPELINE
       TimeoutInMinutes: 15
+      Cache:
+        Type: LOCAL
+        Modes:
+          - LOCAL_CUSTOM_CACHE
 
   PipelineRole:
     Type: AWS::IAM::Role
@@ -118,6 +122,12 @@ Resources:
               - Effect: Allow
                 Action: iam:PassRole
                 Resource: "*"
+
+              - Effect: Allow
+                Action:
+                  - codestar-connections:UseConnection
+                Resource: !Ref CodeStarConnectionArn
+
 
   Pipeline:
     Type: AWS::CodePipeline::Pipeline

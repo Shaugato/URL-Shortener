@@ -7,6 +7,7 @@ phases:
     commands:
       - python -m pip install --upgrade pip
       - pip install -r requirements.txt
+      - pip install -r requirements-dev.txt
       - pip install pytest ruff
 
   pre_build:
@@ -32,6 +33,10 @@ phases:
             echo "RUN_AWS_INTEGRATION not set -> Skipping AWS integration tests."
           fi
 
+cache:
+  paths:
+    - "/root/.cache/pip/**/*"          
+
 artifacts:
   files:
     - "**/*"
@@ -39,3 +44,11 @@ artifacts:
     - ".git/**"
     - ".elasticbeanstalk/**"
     - "infra/**"
+    - ".git/**"
+    - ".elasticbeanstalk/**"
+    - "infra/**"
+    - "tests/**"
+    - ".venv/**"
+    - "__pycache__/**"
+    - ".pytest_cache/**"
+    - ".ruff_cache/**"
